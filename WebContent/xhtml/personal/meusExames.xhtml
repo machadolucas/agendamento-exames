@@ -1,0 +1,222 @@
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Calendário de Exames</title>
+	<script type="text/javascript">
+		PrimeFaces.locales['pt_br'] = {
+			closeText : 'Fechar',
+			prevText : 'Anterior',
+			nextText : 'Próximo',
+			currentText : 'Começo',
+			monthNames : [ 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio',
+					'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro',
+					'Novembro', 'Dezembro' ],
+			monthNamesShort : [ 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+					'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez' ],
+			dayNames : [ 'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta',
+					'Sexta', 'Sábado' ],
+			dayNamesShort : [ 'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb' ],
+			dayNamesMin : [ 'D', 'S', 'T', 'Q', 'Q', 'S', 'S' ],
+			weekHeader : 'Semana',
+			firstDay : 1,
+			isRTL : false,
+			showMonthAfterYear : false,
+			yearSuffix : '',
+			timeOnlyTitle : 'Só Horas',
+			timeText : 'Tempo',
+			hourText : 'Hora',
+			minuteText : 'Minuto',
+			secondText : 'Segundo',
+			currentText : 'Data Atual',
+			ampm : false,
+			month : 'Mês',
+			week : 'Semana',
+			day : 'Dia',
+			allDayText : 'Todo Dia'
+		};
+	</script>
+
+	<link
+		rel="stylesheet"
+		type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/css/global.css"
+		media="all" />
+
+	<style type="text/css">
+.eventPersonal .fc-event-skin {
+	background: #36C !important;
+}
+
+.eventOther .fc-event-skin {
+	background: #adbacd !important;
+}
+</style>
+</h:head>
+<h:body>
+	<p:growl
+		id="messages"
+		showDetail="true" />
+	<h:form id="scheduleForm">
+
+
+		<p:schedule
+			id="schedule"
+			value="#{scheduleController.lazyEventModel}"
+			widgetVar="myschedule"
+			aspectRatio="2"
+			draggable="false"
+			resizable="false"
+			rightHeaderTemplate="month"
+			timeZone="BRT"
+			locale="pt_br">
+
+			<p:ajax
+				event="eventSelect"
+				listener="#{scheduleController.onEventSelect}"
+				update=":updateEventForm:eventDetails"
+				oncomplete="eventDialog.show()" />
+		</p:schedule>
+	</h:form>
+
+	<p:dialog
+		widgetVar="eventDialog"
+		header="Detalhes do exame"
+		showEffect="fade"
+		resizable="false"
+		hideEffect="fade">
+
+		<h:form id="updateEventForm">
+			<p:panelGrid
+				id="eventDetails"
+				styleClass="fixedLayoutTable"
+				columnClasses="labelColumnWithMinimumWidth, inputColumn"
+				columns="2">
+
+				<h:outputLabel value="Status:" />
+				<p:selectOneButton
+					id="status"
+					value="#{scheduleController.editedBean.status}"
+					required="true"
+					requiredMessage="#{msgs.common_field_required}"
+					invalidMessage="#{msgs.common_field_invalid}"
+					valueChangeListener="#{scheduleController.updateEventStatus}">
+					<p:ajax update="statusDescription" />
+					<f:selectItem
+						itemLabel="Agendado"
+						itemValue="Agendado" />
+					<f:selectItem
+						itemLabel="Confirmado"
+						itemValue="Confirmado" />
+					<f:selectItem
+						itemLabel="Cancelado"
+						itemValue="Cancelado" />
+				</p:selectOneButton>
+
+				<h:outputLabel
+					rendered="#{scheduleController.event.data.modificacaoStatus != null}"
+					value="Última modificação de status:" />
+				<h:outputFormat
+					id="statusDescription"
+					rendered="#{scheduleController.event.data.modificacaoStatus != null}"
+					value="{0, date, dd/MM/yyyy HH:mm:ss}, por {1}">
+					<f:param value="#{scheduleController.event.data.modificacaoStatus}" />
+					<f:param value="#{scheduleController.event.data.modificadorStatus}" />
+				</h:outputFormat>
+
+				<p:spacer height="10" />
+				<p:spacer height="10" />
+
+				<h:outputLabel value="Data:" />
+				<p:calendar
+					pattern="dd/MM/yyyy"
+					mode="popup"
+					requiredMessage="#{msgs.common_field_required}"
+					invalidMessage="#{msgs.common_field_invalid}"
+					required="true"
+					value="#{scheduleController.editedBean.dataExame}"
+					style="font-weight:bold;" />
+
+				<h:outputLabel value="Categoria:" />
+				<h:outputText
+					value="#{scheduleController.event.data.categoria}"
+					style="font-weight:bold;" />
+
+				<h:outputLabel value="Tipo de Exame:" />
+				<h:outputText
+					value="#{scheduleController.event.data.tipo}"
+					style="font-weight:bold;" />
+
+				<h:outputLabel value="Responsável:" />
+				<h:outputText
+					value="#{scheduleController.event.data.responsavel}"
+					style="font-weight:bold;" />
+
+				<p:spacer height="10" />
+				<p:spacer height="10" />
+
+				<h:outputLabel value="Paciente:" />
+				<h:outputText
+					value="#{scheduleController.event.data.paciente}"
+					style="font-weight:bold;" />
+
+				<h:outputLabel value="Médico:" />
+				<h:outputText
+					value="#{scheduleController.event.data.medico}"
+					style="font-weight:bold;" />
+
+				<h:outputLabel value="Descrição:" />
+				<h:outputText
+					value="#{scheduleController.event.data.descricao}"
+					style="font-weight:bold;" />
+
+				<p:spacer height="10" />
+				<p:spacer height="10" />
+
+				<h:outputLabel
+					rendered="#{scheduleController.event.data.criacao != null}"
+					value="Criação:" />
+				<h:outputFormat
+					rendered="#{scheduleController.event.data.criacao != null}"
+					value="{0, date, dd/MM/yyyy HH:mm:ss}, por {1}">
+					<f:param value="#{scheduleController.event.data.criacao}" />
+					<f:param value="#{scheduleController.event.data.criador}" />
+				</h:outputFormat>
+
+				<h:outputLabel
+					rendered="#{scheduleController.event.data.modificacao != null}"
+					value="Última modificação" />
+				<h:outputFormat
+					rendered="#{scheduleController.event.data.modificacao != null}"
+					value="{0, date, dd/MM/yyyy HH:mm:ss}, por {1}">
+					<f:param value="#{scheduleController.event.data.modificacao}" />
+					<f:param value="#{scheduleController.event.data.modificador}" />
+				</h:outputFormat>
+			</p:panelGrid>
+
+			<p:commandButton
+				label="#{msgs.global_generic_label_change}"
+				title="#{msgs.global_generic_label_change}"
+				value="#{msgs.global_generic_label_change}"
+				icon="ui-icon ui-icon-disk"
+				update=":scheduleForm:schedule, :messages"
+				disabled="#{not loginHelper.isAdmin()}"
+				actionListener="#{scheduleController.updateEvent}"
+				oncomplete="eventDialog.hide()" />
+			<p:spacer width="10" />
+			<p:commandButton
+				type="button"
+				label="#{msgs.global_generic_label_close}"
+				title="#{msgs.global_generic_label_close}"
+				value="#{msgs.global_generic_label_close}"
+				icon="ui-icon ui-icon-close"
+				onclick="eventDialog.hide()" />
+		</h:form>
+	</p:dialog>
+
+</h:body>
+
+</html>

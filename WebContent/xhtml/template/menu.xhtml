@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+
+	<h:form id="formMenu">
+		<p:menu>
+
+			<p:submenu label="#{msgs.menu_gerenciamento_title}">
+				<p:menuitem
+					value="#{msgs.pacientes_title}"
+					action="#{pacienteViewBean.loadMain}" />
+				<p:menuitem
+					value="#{msgs.medicos_title}"
+					action="#{medicoViewBean.loadMain}" />
+				<p:menuitem
+					value="#{msgs.responsavel_title}"
+					action="#{responsavelViewBean.loadMain}" />
+			</p:submenu>
+			
+			<p:submenu label="#{msgs.exames_title}">
+				<p:menuitem
+					value="#{msgs.tipo_exames_title}"
+					action="#{tipoExameViewBean.loadMain}" />
+				<p:menuitem
+					value="#{msgs.exames_title}"
+					action="#{exameViewBean.loadMain}" />
+				<p:menuitem
+					value="#{msgs.meus_exames_title}"
+					disabled="false"
+					url="/xhtml/personal/meusExames.jsf?faces-redirect=true"
+					target="_blank" />
+			</p:submenu>
+		</p:menu>
+	</h:form>
+
+</h:body>
+</html>

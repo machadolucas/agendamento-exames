@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/xhtml/template/template.xhtml">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem
+				value="#{msgs.system_home_title}"
+				title="#{msgs.system_home_title}"
+				url="/xhtml/index.jsf" />
+			<p:menuitem
+				value="#{msgs.menu_gerenciamento_title}"
+				title="#{msgs.menu_gerenciamento_title}"
+				url="#" />
+			<p:menuitem
+				value="#{msgs.medicos_title}"
+				title="#{msgs.medicos_title}"
+				url="/xhtml/medicos/main.jsf" />
+			<p:menuitem
+				value="#{msgs.medicos_cadastro_title}"
+				title="#{msgs.medicos_cadastro_title}"
+				url="#" />
+		</p:breadCrumb>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<h:form>
+			<h1>
+				<h:outputText value="#{msgs.medicos_cadastro_title}" />
+			</h1>
+
+			<h:outputText value="#{msgs.required_field_toplevel_message}" />
+			<br />
+			<br />
+
+			<p:panelGrid
+				columns="4"
+				styleClass="fixedLayoutTable"
+				columnClasses="requiredSymbolColumn, labelColumnWithMaximumWidth, inputColumn, messagesColumn">
+
+				<h:outputText
+					value="#{msgs.required_field_indicator}"
+					title="#{msgs.required_field_message}" />
+				<h:outputText value="Nome:" />
+				<p:inputText
+					id="nome"
+					value="#{medicoViewBean.bean.nome}"
+					requiredMessage="#{msgs.common_field_required}"
+					invalidMessage="#{msgs.common_field_invalid}"
+					required="true" />
+				<p:message
+					for="nome"
+					display="text" />
+
+				<h:outputText
+					value="#{msgs.required_field_indicator}"
+					title="#{msgs.required_field_message}" />
+				<h:outputText value="CRM:" />
+				<p:inputText
+					id="crm"
+					value="#{medicoViewBean.bean.crm}"
+					requiredMessage="#{msgs.common_field_required}"
+					invalidMessage="#{msgs.common_field_invalid}"
+					required="true" />
+				<p:message
+					for="crm"
+					display="text" />
+
+				<h:outputText />
+				<h:outputText value="Contato:" />
+				<p:inputText
+					id="contato"
+					value="#{medicoViewBean.bean.contato}"
+					required="false" />
+				<p:message
+					for="contato"
+					display="text" />
+
+
+			</p:panelGrid>
+
+			<br />
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+					<p:commandButton
+						type="submit"
+						value="#{msgs.global_generic_label_save}"
+						title="#{msgs.global_generic_label_save}"
+						label="#{msgs.global_generic_label_save}"
+						icon="ui-icon ui-icon-disk"
+						update="@form"
+						disabled="#{not loginHelper.isAdmin()}"
+						action="#{medicoViewBean.save}" />
+					<p:commandButton
+						type="cancel"
+						value="#{msgs.global_generic_label_cancel}"
+						title="#{msgs.global_generic_label_cancel}"
+						label="#{msgs.global_generic_label_cancel}"
+						icon="ui-icon ui-icon-close"
+						action="#{medicoViewBean.cancel}"
+						immediate="true" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/xhtml/template/template.xhtml">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem
+				value="#{msgs.system_home_title}"
+				title="#{msgs.system_home_title}"
+				url="/xhtml/index.jsf" />
+			<p:menuitem
+				value="#{msgs.exames_title}"
+				title="#{msgs.exames_title}"
+				url="#" />
+			<p:menuitem
+				value="#{msgs.exames_title}"
+				title="#{msgs.exames_title}"
+				url="/xhtml/exame/main.jsf" />
+			<p:menuitem
+				value="#{msgs.exames_editar_title}"
+				title="#{msgs.exames_editar_title}"
+				url="#" />
+		</p:breadCrumb>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<h:form>
+			<h1>
+				<h:outputText value="#{msgs.exames_editar_title}" />
+			</h1>
+
+			<h:outputText value="#{msgs.required_field_toplevel_message}" />
+			<br />
+			<br />
+
+			<p:fieldset
+				legend="Controle"
+				style="max-width:830px;">
+				<p:panelGrid
+					columns="4"
+					styleClass="fixedLayoutTable"
+					columnClasses="requiredSymbolColumn, labelColumnWithMaximumWidth, inputColumn, messagesColumn">
+
+					<h:outputText
+						value="#{msgs.required_field_indicator}"
+						title="#{msgs.required_field_message}" />
+					<h:outputText value="Data" />
+					<p:calendar
+						id="data"
+						value="#{exameViewBean.bean.dataExame}"
+						pattern="dd/MM/yyyy"
+						requiredMessage="#{msgs.common_field_required}"
+						invalidMessage="#{msgs.common_field_invalid}"
+						required="true">
+						<p:ajax update="categoria" />
+					</p:calendar>
+					<p:message
+						for="data"
+						display="text" />
+
+					<h:outputText
+						value="#{msgs.required_field_indicator}"
+						title="#{msgs.required_field_message}" />
+					<h:outputText value="Categoria" />
+					<p:selectOneButton
+						id="categoria"
+						value="#{exameViewBean.bean.categoria}"
+						required="true"
+						requiredMessage="#{msgs.common_field_required}"
+						invalidMessage="#{msgs.common_field_invalid}"
+						disabled="#{exameViewBean.bean.dataExame == null}">
+						<p:ajax
+							listener="#{exameViewBean.listenerChangeCategoria}"
+							update="responsavel" />
+						<f:selectItem
+							itemLabel="Normal"
+							itemValue="Normal" />
+						<f:selectItem
+							itemLabel="Vip"
+							itemValue="Vip" />
+					</p:selectOneButton>
+					<p:message
+						for="categoria"
+						display="text" />
+
+
+					<h:outputText
+						value="#{msgs.required_field_indicator}"
+						title="#{msgs.required_field_message}" />
+					<h:outputText value="Tipo de Exame" />
+					<p:selectOneMenu
+						id="tipo"
+						value="#{exameViewBean.bean.tipo}"
+						required="true"
+						requiredMessage="#{msgs.common_field_required}"
+						invalidMessage="#{msgs.common_field_invalid}"
+						filter="true"
+						filterMatchMode="startsWith">
+						<p:ajax
+							listener="#{exameViewBean.listenerChangeTipo}"
+							update="responsavel" />
+						<f:selectItem
+							itemLabel="#{msgs.primefaces_select_one_menu_default_item}"
+							noSelectionOption="true" />
+						<f:selectItems
+							value="#{exameViewBean.tipoExamesList}"
+							var="tipo"
+							itemLabel="#{tipo.nome}"
+							itemValue="#{tipo.nome}" />
+					</p:selectOneMenu>
+					<p:message
+						for="tipo"
+						display="text" />
+
+					<h:outputText
+						value="#{msgs.required_field_indicator}"
+						title="#{msgs.required_field_message}" />
+					<h:outputText value="Responsável" />
+					<p:selectOneMenu
+						id="responsavel"
+						value="#{exameViewBean.bean.responsavel}"
+						required="true"
+						requiredMessage="#{msgs.common_field_required}"
+						invalidMessage="#{msgs.common_field_invalid}"
+						filter="true"
+						filterMatchMode="startsWith"
+						disabled="#{exameViewBean.bean.tipo == null}">
+						<f:selectItem
+							itemLabel="#{msgs.primefaces_select_one_menu_default_item}"
+							noSelectionOption="true" />
+						<f:selectItems
+							value="#{exameViewBean.responsaveisList}"
+							var="responsavel"
+							itemLabel="#{responsavel.nome}"
+							itemValue="#{responsavel.nome}" />
+					</p:selectOneMenu>
+					<p:message
+						for="responsavel"
+						display="text" />
+				</p:panelGrid>
+			</p:fieldset>
+
+			<br></br>
+
+			<p:fieldset
+				legend="Geral"
+				style="max-width:830px;">
+				<p:panelGrid
+					columns="4"
+					styleClass="fixedLayoutTable"
+					columnClasses="requiredSymbolColumn, labelColumnWithMaximumWidth, inputColumn, messagesColumn">
+					<h:outputText
+						value="#{msgs.required_field_indicator}"
+						title="#{msgs.required_field_message}" />
+					<h:outputText value="Paciente" />
+					<p:selectOneMenu
+						id="paciente"
+						value="#{exameViewBean.bean.paciente}"
+						required="true"
+						requiredMessage="#{msgs.common_field_required}"
+						invalidMessage="#{msgs.common_field_invalid}"
+						filter="true"
+						filterMatchMode="startsWith">
+						<f:selectItem
+							itemLabel="#{msgs.primefaces_select_one_menu_default_item}"
+							noSelectionOption="true" />
+						<f:selectItems
+							value="#{exameViewBean.pacientesList}"
+							var="paciente"
+							itemLabel="#{paciente.nome}"
+							itemValue="#{paciente.nome}" />
+					</p:selectOneMenu>
+					<p:message
+						for="paciente"
+						display="text" />
+
+					<h:outputText
+						value="#{msgs.required_field_indicator}"
+						title="#{msgs.required_field_message}" />
+					<h:outputText value="Médico" />
+					<p:selectOneMenu
+						id="medico"
+						value="#{exameViewBean.bean.medico}"
+						required="true"
+						requiredMessage="#{msgs.common_field_required}"
+						invalidMessage="#{msgs.common_field_invalid}"
+						filter="true"
+						filterMatchMode="startsWith">
+						<f:selectItem
+							itemLabel="#{msgs.primefaces_select_one_menu_default_item}"
+							noSelectionOption="true" />
+						<f:selectItems
+							value="#{exameViewBean.medicosList}"
+							var="medico"
+							itemLabel="#{medico.nome}"
+							itemValue="#{medico.nome}" />
+					</p:selectOneMenu>
+					<p:message
+						for="medico"
+						display="text" />
+
+
+
+					<h:outputText />
+					<h:outputText value="Descrição" />
+					<p:inputTextarea
+						id="descricao"
+						value="#{exameViewBean.bean.descricao}"
+						required="false"
+						maxlength="512" />
+					<p:message
+						for="descricao"
+						display="text" />
+
+				</p:panelGrid>
+			</p:fieldset>
+
+			<br></br>
+
+			<p:fieldset
+				legend="Status"
+				style="max-width:830px;">
+				<p:panelGrid
+					columns="4"
+					styleClass="fixedLayoutTable"
+					columnClasses="requiredSymbolColumn, labelColumnWithMaximumWidth, inputColumn, messagesColumn">
+					<h:outputText
+						value="#{msgs.required_field_indicator}"
+						title="#{msgs.required_field_message}" />
+					<h:outputText value="Status" />
+					<p:selectOneButton
+						id="status"
+						value="#{exameViewBean.bean.status}"
+						required="true"
+						requiredMessage="#{msgs.common_field_required}"
+						invalidMessage="#{msgs.common_field_invalid}"
+						valueChangeListener="#{exameViewBean.updateStatus}">
+						<p:ajax update="statusDescription" />
+						<f:selectItem
+							itemLabel="Agendado"
+							itemValue="Agendado" />
+						<f:selectItem
+							itemLabel="Confirmado"
+							itemValue="Confirmado" />
+						<f:selectItem
+							itemLabel="Cancelado"
+							itemValue="Cancelado" />
+					</p:selectOneButton>
+					<p:message
+						for="status"
+						display="text" />
+				</p:panelGrid>
+				<p:outputPanel id="statusDescription">
+					<h:outputFormat
+						rendered="#{exameViewBean.bean.modificacaoStatus != null}"
+						value="Última alteração realizada por {0}, em {1, date, dd/MM/yyyy HH:mm:ss}">
+						<f:param value="#{exameViewBean.bean.modificadorStatus}" />
+						<f:param value="#{exameViewBean.bean.modificacaoStatus}" />
+					</h:outputFormat>
+				</p:outputPanel>
+			</p:fieldset>
+
+			<br />
+
+			<p:fieldset style="max-width:830px">
+				<p:panelGrid
+					columns="2"
+					styleClass="fixedLayoutTable"
+					columnClasses="labelColumnWithMinimumWidth, inputColumn">
+					<h:outputText
+						rendered="#{exameViewBean.bean.criacao != null}"
+						value="Criação:" />
+					<h:outputFormat
+						rendered="#{exameViewBean.bean.criacao != null}"
+						value="{0, date, dd/MM/yyyy HH:mm:ss}, por {1}">
+						<f:param value="#{exameViewBean.bean.criacao}" />
+						<f:param value="#{exameViewBean.bean.criador}" />
+					</h:outputFormat>
+
+					<h:outputText
+						rendered="#{exameViewBean.bean.modificacao != null}"
+						value="Última modificação:" />
+					<h:outputFormat
+						rendered="#{exameViewBean.bean.modificacao != null}"
+						value="{0, date, dd/MM/yyyy HH:mm:ss}, por {1}">
+						<f:param value="#{exameViewBean.bean.modificacao}" />
+						<f:param value="#{exameViewBean.bean.modificador}" />
+					</h:outputFormat>
+				</p:panelGrid>
+			</p:fieldset>
+
+			<br />
+
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+					<p:commandButton
+						type="submit"
+						value="#{msgs.global_generic_label_save}"
+						title="#{msgs.global_generic_label_save}"
+						label="#{msgs.global_generic_label_save}"
+						icon="ui-icon ui-icon-disk"
+						update="@form"
+						disabled="#{not loginHelper.isAdmin()}"
+						action="#{exameViewBean.update}" />
+					<p:commandButton
+						type="cancel"
+						value="#{msgs.global_generic_label_cancel}"
+						title="#{msgs.global_generic_label_cancel}"
+						label="#{msgs.global_generic_label_cancel}"
+						icon="ui-icon ui-icon-close"
+						action="#{exameViewBean.cancel}"
+						immediate="true" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+

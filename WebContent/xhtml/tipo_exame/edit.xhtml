@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/xhtml/template/template.xhtml">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem
+				value="#{msgs.system_home_title}"
+				title="#{msgs.system_home_title}"
+				url="/xhtml/index.jsf" />
+			<p:menuitem
+				value="#{msgs.exames_title}"
+				title="#{msgs.exames_title}"
+				url="#" />
+			<p:menuitem
+				value="#{msgs.tipo_exames_title}"
+				title="#{msgs.tipo_exames_title}"
+				url="/xhtml/tipo_exame/main.jsf" />
+			<p:menuitem
+				value="#{msgs.tipo_exames_editar_title}"
+				title="#{msgs.tipo_exames_editar_title}"
+				url="#" />
+		</p:breadCrumb>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<h:form>
+			<h1>
+				<h:outputText value="#{msgs.tipo_exames_editar_title}" />
+			</h1>
+
+			<h:outputText value="#{msgs.required_field_toplevel_message}" />
+			<br />
+			<br />
+
+			<p:panelGrid
+				columns="4"
+				styleClass="fixedLayoutTable"
+				columnClasses="requiredSymbolColumn, labelColumnWithMaximumWidth, inputColumn, messagesColumn">
+
+
+				<h:outputText />
+				<h:outputText value="Nome:" />
+				<h:outputText value="#{tipoExameViewBean.bean.nome}" />
+				<h:outputText />
+
+				<h:outputText />
+				<h:outputText value="Descrição:" />
+				<p:inputTextarea
+					id="descricao"
+					value="#{tipoExameViewBean.bean.descricao}"
+					required="false"
+					maxlength="512" />
+				<p:message
+					for="descricao"
+					display="text" />
+
+			</p:panelGrid>
+			
+			<br />
+			<p:fieldset>
+				<p:panelGrid
+					columns="2"
+					styleClass="fixedLayoutTable"
+					columnClasses="labelColumnWithMinimumWidth, inputColumn">
+					<h:outputText
+						rendered="#{tipoExameViewBean.bean.criacao != null}"
+						value="Criação:" />
+					<h:outputFormat
+						rendered="#{tipoExameViewBean.bean.criacao != null}"
+						value="{0, date, dd/MM/yyyy HH:mm:ss}, por {1}">
+						<f:param value="#{tipoExameViewBean.bean.criacao}" />
+						<f:param value="#{tipoExameViewBean.bean.criador}" />
+					</h:outputFormat>
+
+					<h:outputText
+						rendered="#{tipoExameViewBean.bean.modificacao != null}"
+						value="Última modificação:" />
+					<h:outputFormat
+						rendered="#{tipoExameViewBean.bean.modificacao != null}"
+						value="{0, date, dd/MM/yyyy HH:mm:ss}, por {1}">
+						<f:param value="#{tipoExameViewBean.bean.modificacao}" />
+						<f:param value="#{tipoExameViewBean.bean.modificador}" />
+					</h:outputFormat>
+				</p:panelGrid>
+			</p:fieldset>
+
+			<br />
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+					<p:commandButton
+						type="submit"
+						value="#{msgs.global_generic_label_save}"
+						title="#{msgs.global_generic_label_save}"
+						label="#{msgs.global_generic_label_save}"
+						icon="ui-icon ui-icon-disk"
+						update="@form"
+						disabled="#{not loginHelper.isAdmin()}"
+						action="#{tipoExameViewBean.update}" />
+					<p:commandButton
+						type="cancel"
+						value="#{msgs.global_generic_label_cancel}"
+						title="#{msgs.global_generic_label_cancel}"
+						label="#{msgs.global_generic_label_cancel}"
+						icon="ui-icon ui-icon-close"
+						action="#{tipoExameViewBean.cancel}"
+						immediate="true" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+

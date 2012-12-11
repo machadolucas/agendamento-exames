@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<f:loadBundle
+		basename="br.com.agendamento.resources.messages"
+		var="msgs" />
+	<meta
+		http-equiv="Content-Type"
+		content="text/html; charset=UTF-8" />
+
+	<meta
+		http-equiv="content-language"
+		content="pt-br" />
+	<meta
+		http-equiv="expires"
+		content="0" />
+
+	<title>Módulo Agendamento de Exames</title>
+
+	<link
+		rel="stylesheet"
+		type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/css/global.css"
+		media="all" />
+
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/js/script.js" />
+
+</h:head>
+<h:body onload="javascript:on_body_load();">
+
+		<p:growl
+			id="growl"
+			showDetail="true"
+			showSummary="true"
+			autoUpdate="true"
+			globalOnly="true"
+			sticky="true" />
+
+	<p:layout fullPage="true">
+
+		<p:layoutUnit
+			id="north"
+			position="north"
+			size="50"
+			resizable="false"
+			closable="false"
+			collapsible="true"
+			style="border: 1; padding-top: 0; padding-bottom: 0;">
+			<h:panelGrid
+				border="0"
+				columns="2"
+				columnClasses="logoTopTableColumn, userInfoTopTableColumn"
+				styleClass="topTable">
+
+				<h:panelGroup>
+					<h2
+						style="margin: 0px 15px 0px 15px; font-weight: normal; color: #444; LETTER-SPACING: -1px; line-height: 44px">
+						<h:outputText value="#{msgs.system_name}" />
+					</h2>
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<h:form>
+						<p:menuButton
+							value="Logado como #{loginHelper.current.username}"
+							style="float: right; margin:5px;">
+							<p:menuitem
+								disabled="#{not loginHelper.isLoggedIn()}"
+								value="Editar Usuário"
+								icon="ui-icon ui-icon-pencil"
+								action="#{responsavelViewBean.editCurrentUser}" />
+							<p:menuitem
+								value="Logout"
+								icon="ui-icon ui-icon-close"
+								action="#{loginHelper.logout}" />
+						</p:menuButton>
+					</h:form>
+				</h:panelGroup>
+			</h:panelGrid>
+		</p:layoutUnit>
+
+		<p:layoutUnit
+			id="south"
+			position="south"
+			size="25"
+			resizable="false"
+			closable="false"
+			collapsible="true">
+			&copy; 2012 <h:outputText
+				value=" #{msgs.system_name} - Engª Software (G3) - EACH / Universidade de São Paulo" />
+		</p:layoutUnit>
+
+		<p:layoutUnit
+			id="west"
+			position="west"
+			size="200px"
+			resizable="true"
+			closable="false"
+			collapsible="true"
+			effect="drop">
+			<ui:include src="/xhtml/template/menu.xhtml" />
+		</p:layoutUnit>
+
+		<p:layoutUnit
+			id="center"
+			position="center">
+			<ui:insert name="breadcrumb" />
+			<br />
+			<ui:insert name="content" />
+		</p:layoutUnit>
+
+	</p:layout>
+
+	<ui:insert name="dialogs" />
+
+	<p:ajaxStatus
+		onstart="statusDialog.show();"
+		oncomplete="statusDialog.hide();" />
+
+	<p:dialog
+		modal="true"
+		closable="false"
+		draggable="false"
+		resizable="false"
+		showHeader="false"
+		widgetVar="statusDialog">
+		<h:panelGrid style="text-align: center;">
+			<h:outputText value="#{msgs.ajaxstatus_loading_message}" />
+			<p:graphicImage value="/img/loading.gif" />
+		</h:panelGrid>
+	</p:dialog>
+
+</h:body>
+</html>

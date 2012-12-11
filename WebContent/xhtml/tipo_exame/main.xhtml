@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/xhtml/template/template.xhtml">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem
+				value="#{msgs.system_home_title}"
+				title="#{msgs.system_home_title}"
+				url="/xhtml/index.jsf" />
+			<p:menuitem
+				value="#{msgs.exames_title}"
+				title="#{msgs.exames_title}"
+				url="#" />
+			<p:menuitem
+				value="#{msgs.tipo_exames_title}"
+				title="#{msgs.tipo_exames_title}"
+				url="#" />
+		</p:breadCrumb>
+	</ui:define>
+
+	<ui:define name="content">
+		<h1>
+			<h:outputText value="#{msgs.tipo_exames_title}" />
+		</h1>
+
+		<f:view contentType="text/html">
+			<h:form id="mainForm">
+
+				<p:messages
+					id="formMessages"
+					showDetail="true"
+					autoUpdate="false" />
+
+				<ui:include src="/xhtml/template/dataexporter-toolbar.xhtml" />
+
+				<p:contextMenu for="dataTable">
+					<p:menuitem
+						value="#{msgs.global_generic_label_edit}"
+						action="#{tipoExameViewBean.edit}"
+						icon="ui-icon ui-icon-pencil"
+						disabled="#{not loginHelper.isAdmin()}"
+						update="dataTable" />
+					<p:menuitem
+						value="#{msgs.global_generic_label_delete}"
+						icon="ui-icon ui-icon-trash"
+						disabled="#{not loginHelper.isAdmin()}"
+						update="dataTable"
+						process=":mainForm:dataTable"
+						actionListener="#{tipoExameViewBean.dialogIfSelected}" />
+				</p:contextMenu>
+
+				<p:dataTable
+					id="dataTable"
+					emptyMessage="#{msgs.primefaces_datatable_empty_message}"
+					pageLinks="#{msgs.primefaces_datatable_pagelinks}"
+					paginator="true"
+					paginatorAlwaysVisible="false"
+					rowKey="#{element.id}"
+					rows="10"
+					rowsPerPageTemplate="#{msgs.primefaces_table_paginator_rows_per_page_template}"
+					selection="#{tipoExameViewBean.bean}"
+					selectionMode="single"
+					value="#{tipoExameViewBean.list}"
+					var="element">
+
+					<f:facet name="header">
+						<h:outputText value="#{msgs.tipo_exames_datatable_header}" />
+					</f:facet>
+
+					<p:column
+						sortBy="#{element.nome}"
+						filterBy="#{element.nome}"
+						headerText="#{msgs.tipo_exames_datatable_nome}">
+						<f:facet name="header">
+							<h:outputText value="#{msgs.tipo_exames_datatable_nome}" />
+						</f:facet>
+						<h:outputText value="#{element.nome}" />
+					</p:column>
+
+
+					<f:facet name="footer">
+					</f:facet>
+
+				</p:dataTable>
+
+				<br />
+
+				<p:toolbar>
+					<p:toolbarGroup>
+						<p:commandButton
+							type="submit"
+							id="submitButton"
+							label="#{msgs.global_generic_label_add}"
+							title="#{msgs.global_generic_label_add}"
+							value="#{msgs.global_generic_label_add}"
+							action="#{tipoExameViewBean.add}"
+							immediate="true"
+							icon="ui-icon ui-icon-document"
+							disabled="#{not loginHelper.isAdmin()}"
+							ajax="false" />
+						<p:commandButton
+							type="submit"
+							id="editButton"
+							label="#{msgs.global_generic_label_edit}"
+							title="#{msgs.global_generic_label_edit}"
+							value="#{msgs.global_generic_label_edit}"
+							action="#{tipoExameViewBean.edit}"
+							icon="ui-icon ui-icon-pencil"
+							ajax="false" />
+						<p:commandButton
+							type="submit"
+							id="deleteButton"
+							label="#{msgs.global_generic_label_delete}"
+							title="#{msgs.global_generic_label_delete}"
+							value="#{msgs.global_generic_label_delete}"
+							icon="ui-icon ui-icon-trash"
+							disabled="#{not loginHelper.isAdmin()}"
+							update="dataTable, formMessages"
+							oncomplete="handleDeletePopupRequest(xhr, status, args)"
+							actionListener="#{tipoExameViewBean.dialogIfSelected}" />
+					</p:toolbarGroup>
+				</p:toolbar>
+
+			</h:form>
+		</f:view>
+
+
+	</ui:define>
+
+	<ui:define name="dialogs">
+		<p:confirmDialog
+			message="#{msgs.command_delete_confirmation}"
+			header="#{msgs.primefaces_confirmDialog_delete_header}"
+			id="confirmDeleteDialog"
+			widgetVar="confirmDeleteDialogWid">
+			<h:form id="confirmDeleteForm">
+
+				<p:commandButton
+					id="confirmDeleteButton"
+					label="#{msgs.global_generic_label_yes}"
+					title="#{msgs.command_confirm_alt}"
+					value="#{msgs.global_generic_label_yes}"
+					icon="ui-icon ui-icon-trash"
+					update=":mainForm:dataTable"
+					disabled="#{not loginHelper.isAdmin()}"
+					actionListener="#{tipoExameViewBean.delete}"
+					oncomplete="confirmDeleteDialogWid.hide()" />
+				<p:commandButton
+					type="button"
+					label="#{msgs.global_generic_label_no}"
+					title="#{msgs.command_cancel_alt}"
+					value="#{msgs.global_generic_label_no}"
+					icon="ui-icon ui-icon-close"
+					onclick="confirmDeleteDialogWid.hide()" />
+			</h:form>
+
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>
+

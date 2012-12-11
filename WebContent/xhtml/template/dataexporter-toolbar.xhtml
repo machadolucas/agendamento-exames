@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:loadBundle
+	basename="br.com.agendamento.resources.messages"
+	var="msgs" />
+<h:body>
+	<h:panelGrid width="100%">
+		<h:panelGroup
+			layout="block"
+			style="text-align: right;">
+			<h:commandLink>
+				<p:graphicImage
+					alt="#{msgs.primefaces_dataexporter_excel_label}"
+					title="#{msgs.primefaces_dataexporter_excel_label}"
+					style="border: 0px;"
+					value="/img/excel.png" />
+				<p:dataExporter
+					encoding="#{msgs.primefaces_dataexporter_encoding}"
+					type="xls"
+					target="dataTable"
+					fileName="#{msgs.primefaces_dataexporter_default_filename}" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage
+					alt="#{msgs.primefaces_dataexporter_pdf_label}"
+					title="#{msgs.primefaces_dataexporter_pdf_label}"
+					style="border: 0px;"
+					value="/img/pdf.png" />
+				<p:dataExporter
+					encoding="#{msgs.primefaces_dataexporter_encoding}"
+					type="pdf"
+					target="dataTable"
+					fileName="#{msgs.primefaces_dataexporter_default_filename}" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage
+					alt="#{msgs.primefaces_dataexporter_csv_label}"
+					title="#{msgs.primefaces_dataexporter_csv_label}"
+					style="border: 0px;"
+					value="/img/csv.png" />
+				<p:dataExporter
+					encoding="#{msgs.primefaces_dataexporter_encoding}"
+					type="csv"
+					target="dataTable"
+					fileName="#{msgs.primefaces_dataexporter_default_filename}" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage
+					alt="#{msgs.primefaces_dataexporter_xml_label}"
+					title="#{msgs.primefaces_dataexporter_xml_label}"
+					style="border: 0px;"
+					value="/img/xml.png" />
+				<p:dataExporter
+					encoding="#{msgs.primefaces_dataexporter_encoding}"
+					type="xml"
+					target="dataTable"
+					fileName="#{msgs.primefaces_dataexporter_default_filename}" />
+			</h:commandLink>
+		</h:panelGroup>
+	</h:panelGrid>
+	<br></br>
+</h:body>
+</html>

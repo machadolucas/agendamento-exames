@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/xhtml/template/template.xhtml">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem
+				value="#{msgs.system_home_title}"
+				title="#{msgs.system_home_title}"
+				url="/xhtml/index.jsf" />
+			<p:menuitem
+				value="#{msgs.menu_gerenciamento_title}"
+				title="#{msgs.menu_gerenciamento_title}"
+				url="#" />
+			<p:menuitem
+				value="#{msgs.pacientes_title}"
+				title="#{msgs.pacientes_title}"
+				url="/xhtml/paciente/main.jsf" />
+			<p:menuitem
+				value="#{msgs.pacientes_editar_title}"
+				title="#{msgs.pacientes_editar_title}"
+				url="#" />
+		</p:breadCrumb>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<h:form>
+			<h1>
+				<h:outputText value="#{msgs.pacientes_editar_title}" />
+			</h1>
+
+			<h:outputText value="#{msgs.required_field_toplevel_message}" />
+			<br />
+			<br />
+
+			<p:panelGrid
+				columns="4"
+				styleClass="fixedLayoutTable"
+				columnClasses="requiredSymbolColumn, labelColumnWithMaximumWidth, inputColumn, messagesColumn">
+
+				<h:outputText
+					value="#{msgs.required_field_indicator}"
+					title="#{msgs.required_field_message}" />
+				<h:outputText value="#{msgs.pacientes_datatable_nome}:" />
+				<p:inputText
+					id="nome"
+					maxlength="128"
+					value="#{pacienteViewBean.bean.nome}"
+					requiredMessage="#{msgs.common_field_required}"
+					invalidMessage="#{msgs.common_field_invalid}"
+					required="true" />
+				<p:message
+					for="nome"
+					display="text" />
+
+				<h:outputText
+					value="#{msgs.required_field_indicator}"
+					title="#{msgs.required_field_message}" />
+				<h:outputText value="#{msgs.pacientes_datatable_rg}:" />
+				<p:inputMask
+					id="rg"
+					mask="99.999.999-*"
+					value="#{pacienteViewBean.bean.RG}"
+					requiredMessage="#{msgs.common_field_required}"
+					invalidMessage="#{msgs.common_field_invalid}"
+					required="true" />
+				<p:message
+					for="rg"
+					display="text" />
+
+				<h:outputText />
+				<h:outputText value="#{msgs.pacientes_datatable_cpf}:" />
+				<p:inputMask
+					id="cpf"
+					mask="999.999.999-99"
+					value="#{pacienteViewBean.bean.CPF}"
+					invalidMessage="#{msgs.common_field_invalid}"
+					required="false">
+					<f:validator validatorId="cpfValidator" />
+				</p:inputMask>
+				<p:message
+					for="cpf"
+					display="text" />
+
+				<h:outputText
+					value="#{msgs.required_field_indicator}"
+					title="#{msgs.required_field_message}" />
+				<h:outputText value="#{msgs.pacientes_datatable_data_nascimento}:" />
+				<p:calendar
+					id="nascimento"
+					value="#{pacienteViewBean.bean.dataNascimento}"
+					pattern="dd/MM/yyyy"
+					requiredMessage="#{msgs.common_field_required}"
+					invalidMessage="#{msgs.common_field_invalid}"
+					required="true" />
+				<p:message
+					for="nascimento"
+					display="text" />
+
+			</p:panelGrid>
+
+			<br></br>
+
+			<p:fieldset
+				legend="Contato"
+				style="max-width:830px">
+				<p:panelGrid
+					columns="4"
+					styleClass="fixedLayoutTable"
+					columnClasses="requiredSymbolColumn, labelColumnWithMaximumWidth, inputColumn, messagesColumn">
+
+					<h:outputText
+						value="#{msgs.required_field_indicator}"
+						title="#{msgs.required_field_message}" />
+					<h:outputText value="#{msgs.pacientes_datatable_telefone}:" />
+					<p:inputText
+						id="telefone"
+						maxlength="16"
+						value="#{pacienteViewBean.bean.telefone}"
+						requiredMessage="#{msgs.common_field_required}"
+						invalidMessage="#{msgs.common_field_invalid}"
+						required="true" />
+					<p:message
+						for="telefone"
+						display="text" />
+
+					<h:outputText
+						value="#{msgs.required_field_indicator}"
+						title="#{msgs.required_field_message}" />
+					<h:outputText value="#{msgs.pacientes_datatable_email}:" />
+					<p:inputText
+						id="email"
+						maxlength="32"
+						value="#{pacienteViewBean.bean.email}"
+						requiredMessage="#{msgs.common_field_required}"
+						invalidMessage="#{msgs.common_field_invalid}"
+						required="true">
+						<f:validator validatorId="emailValidator" />
+					</p:inputText>
+					<p:message
+						for="email"
+						display="text" />
+
+					<h:outputText />
+					<h:outputText value="#{msgs.pacientes_datatable_rua}:" />
+					<p:inputText
+						id="rua"
+						value="#{pacienteViewBean.bean.rua}"
+						maxlength="32"
+						required="false" />
+					<p:message
+						for="rua"
+						display="text" />
+
+					<h:outputText />
+					<h:outputText value="#{msgs.pacientes_datatable_numero}:" />
+					<p:inputText
+						maxlength="6"
+						id="numero"
+						value="#{pacienteViewBean.bean.numero}"
+						required="false" />
+					<p:message
+						for="numero"
+						display="text" />
+
+					<h:outputText />
+					<h:outputText value="#{msgs.pacientes_datatable_complemento}:" />
+					<p:inputText
+						id="complemento"
+						value="#{pacienteViewBean.bean.complemento}"
+						maxlength="32"
+						required="false" />
+					<p:message
+						for="complemento"
+						display="text" />
+
+					<h:outputText />
+					<h:outputText value="#{msgs.pacientes_datatable_cep}:" />
+					<p:inputMask
+						id="cep"
+						mask="99999-999"
+						value="#{pacienteViewBean.bean.CEP}"
+						required="false" />
+					<p:message
+						for="cep"
+						display="text" />
+
+					<h:outputText />
+					<h:outputText value="#{msgs.pacientes_datatable_cidade}:" />
+					<p:inputText
+						id="cidade"
+						value="#{pacienteViewBean.bean.cidade}"
+						maxlength="32"
+						required="false" />
+					<p:message
+						for="cidade"
+						display="text" />
+
+					<h:outputText />
+					<h:outputText value="#{msgs.pacientes_datatable_estado}:" />
+					<p:inputMask
+						id="estado"
+						mask="aa"
+						value="#{pacienteViewBean.bean.estado}"
+						required="false" />
+					<p:message
+						for="estado"
+						display="text" />
+
+				</p:panelGrid>
+			</p:fieldset>
+
+			<br></br>
+
+			<p:fieldset
+				legend="Responsável"
+				style="max-width:830px">
+				<p:panelGrid
+					columns="4"
+					styleClass="fixedLayoutTable"
+					columnClasses="requiredSymbolColumn, labelColumnWithMaximumWidth, inputColumn, messagesColumn">
+
+					<h:outputText />
+					<h:outputText value="Nome do responsável:" />
+					<p:inputText
+						id="nomeResponsavel"
+						maxlength="128"
+						value="#{pacienteViewBean.bean.nomeResponsavel}"
+						required="false" />
+					<p:message
+						for="nomeResponsavel"
+						display="text" />
+
+					<h:outputText />
+					<h:outputText value="Documento do responsåvel:" />
+					<p:inputText
+						id="docResponsavel"
+						maxlength="32"
+						value="#{pacienteViewBean.bean.documentoResponsavel}"
+						required="false" />
+					<p:message
+						for="docResponsavel"
+						display="text" />
+
+					<h:outputText />
+					<h:outputText value="Email do responsável:" />
+					<p:inputText
+						id="emailResponsavel"
+						maxlength="32"
+						value="#{pacienteViewBean.bean.emailResponsavel}"
+						required="false" />
+					<p:message
+						for="emailResponsavel"
+						display="text" />
+
+				</p:panelGrid>
+			</p:fieldset>
+
+			<br></br>
+
+			<p:fieldset
+				id="medicoFieldset"
+				legend="Médico"
+				style="max-width:830px">
+				<p:panelGrid
+					columns="4"
+					styleClass="fixedLayoutTable"
+					columnClasses="requiredSymbolColumn, labelColumnWithMaximumWidth, inputColumn, messagesColumn">
+
+					<h:outputText
+						value="#{msgs.required_field_indicator}"
+						title="#{msgs.required_field_message}" />
+					<h:outputText value="Nome do médico:" />
+					<p:selectOneMenu
+						id="nomeMedico"
+						value="#{pacienteViewBean.bean.nomeMedicoResponsavel}"
+						required="true"
+						filter="true"
+						requiredMessage="#{msgs.common_field_required}"
+						invalidMessage="#{msgs.common_field_invalid}"
+						filterMatchMode="startsWith">
+						<f:selectItem
+							itemLabel="#{msgs.primefaces_select_one_menu_default_item}"
+							noSelectionOption="true" />
+						<f:selectItems
+							value="#{pacienteViewBean.medicosList}"
+							var="medico"
+							itemLabel="#{medico}" />
+					</p:selectOneMenu>
+					<p:message
+						for="nomeMedico"
+						display="text" />
+
+				</p:panelGrid>
+			</p:fieldset>
+
+			<br />
+
+			<p:fieldset>
+				<p:panelGrid
+					columns="2"
+					styleClass="fixedLayoutTable"
+					columnClasses="labelColumnWithMinimumWidth, inputColumn">
+					<h:outputText
+						rendered="#{pacienteViewBean.bean.criacao != null}"
+						value="Criação:" />
+					<h:outputFormat
+						rendered="#{pacienteViewBean.bean.criacao != null}"
+						value="{0, date, dd/MM/yyyy HH:mm:ss}, por {1}">
+						<f:param value="#{pacienteViewBean.bean.criacao}" />
+						<f:param value="#{pacienteViewBean.bean.criador}" />
+					</h:outputFormat>
+
+					<h:outputText
+						rendered="#{pacienteViewBean.bean.modificacao != null}"
+						value="Última modificação:" />
+					<h:outputFormat
+						rendered="#{pacienteViewBean.bean.modificacao != null}"
+						value="{0, date, dd/MM/yyyy HH:mm:ss}, por {1}">
+						<f:param value="#{pacienteViewBean.bean.modificacao}" />
+						<f:param value="#{pacienteViewBean.bean.modificador}" />
+					</h:outputFormat>
+				</p:panelGrid>
+			</p:fieldset>
+
+			<br />
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+					<p:commandButton
+						type="submit"
+						value="#{msgs.global_generic_label_save}"
+						title="#{msgs.global_generic_label_save}"
+						label="#{msgs.global_generic_label_save}"
+						icon="ui-icon ui-icon-disk"
+						update="@form"
+						disabled="#{not loginHelper.isAdmin()}"
+						action="#{pacienteViewBean.update}" />
+					<p:commandButton
+						type="cancel"
+						value="#{msgs.global_generic_label_cancel}"
+						title="#{msgs.global_generic_label_cancel}"
+						label="#{msgs.global_generic_label_cancel}"
+						icon="ui-icon ui-icon-close"
+						action="#{pacienteViewBean.cancel}"
+						immediate="true" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+

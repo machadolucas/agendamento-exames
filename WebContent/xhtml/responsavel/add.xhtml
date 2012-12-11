@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/xhtml/template/template.xhtml">
+
+	<ui:define name="breadcrumb">
+		<p:breadCrumb>
+			<p:menuitem
+				value="#{msgs.system_home_title}"
+				title="#{msgs.system_home_title}"
+				url="/xhtml/index.jsf" />
+			<p:menuitem
+				value="#{msgs.menu_gerenciamento_title}"
+				title="#{msgs.menu_gerenciamento_title}"
+				url="#" />
+			<p:menuitem
+				value="#{msgs.responsavel_title}"
+				title="#{msgs.responsavel_title}"
+				url="/xhtml/responsavel/main.jsf" />
+			<p:menuitem
+				value="#{msgs.responsavel_cadastro_title}"
+				title="#{msgs.responsavel_cadastro_title}"
+				url="#" />
+		</p:breadCrumb>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<h:form>
+			<h1>
+				<h:outputText value="#{msgs.responsavel_cadastro_title}" />
+			</h1>
+
+			<h:outputText value="#{msgs.required_field_toplevel_message}" />
+			<br />
+			<br />
+
+			<p:panelGrid
+				columns="4"
+				styleClass="fixedLayoutTable"
+				columnClasses="requiredSymbolColumn, labelColumnWithMaximumWidth, inputColumn, messagesColumn">
+
+				<h:outputText
+					value="#{msgs.required_field_indicator}"
+					title="#{msgs.required_field_message}" />
+				<h:outputText value="#{msgs.responsavel_datatable_nome}:" />
+				<p:inputText
+					id="nome"
+					value="#{responsavelViewBean.bean.nome}"
+					requiredMessage="#{msgs.common_field_required}"
+					invalidMessage="#{msgs.common_field_invalid}"
+					required="true" />
+				<p:message
+					for="nome"
+					display="text" />
+
+				<h:outputText
+					value="#{msgs.required_field_indicator}"
+					title="#{msgs.required_field_message}" />
+				<h:outputText value="#{msgs.responsavel_datatable_email}:" />
+				<p:inputText
+					id="email"
+					value="#{responsavelViewBean.bean.email}"
+					requiredMessage="#{msgs.common_field_required}"
+					invalidMessage="#{msgs.common_field_invalid}"
+					required="true">
+					<f:validator validatorId="emailValidator" />
+				</p:inputText>
+				<p:message
+					for="email"
+					display="text" />
+
+				<h:outputText />
+				<h:outputText value="Tipo de Acesso:" />
+				<p:selectOneButton
+					id="tipoUser"
+					value="#{responsavelViewBean.bean.tipo}"
+					required="true"
+					requiredMessage="#{msgs.common_field_required}"
+					invalidMessage="#{msgs.common_field_invalid}"
+					disabled="#{not loginHelper.current.access eq 'Administrador'}">
+					<f:selectItem
+						itemLabel="Administrador"
+						itemValue="Administrador" />
+					<f:selectItem
+						itemLabel="Coordenador"
+						itemValue="Coordenador" />
+					<f:selectItem
+						itemLabel="Usuário"
+						itemValue="Usuário" />
+				</p:selectOneButton>
+				<p:message
+					for="tipoUser"
+					display="text" />
+
+			</p:panelGrid>
+			<br></br>
+
+			<p:fieldset
+				legend="Dias de trabalho"
+				style="max-width:830px">
+
+				<p:pickList
+					id="dias"
+					value="#{responsavelViewBean.dualListWeekdays}"
+					var="day"
+					itemLabel="#{day}"
+					itemValue="#{day}"
+					disabled="#{not loginHelper.current.access eq 'Administrador' || not loginHelper.current.access eq 'Coordenador'}"
+					effect="fade">
+					<f:facet name="sourceCaption">Disponíveis</f:facet>
+					<f:facet name="targetCaption">Selecionados</f:facet>
+				</p:pickList>
+
+			</p:fieldset>
+
+			<br></br>
+
+			<p:fieldset
+				legend="Tipos de exame atendidos"
+				style="max-width:830px">
+
+				<p:pickList
+					id="tipoExamesPicklist"
+					value="#{responsavelViewBean.dualListTipoExame}"
+					var="tipo"
+					itemLabel="#{tipo}"
+					itemValue="#{tipo}"
+					disabled="#{not loginHelper.current.access eq 'Administrador' || not loginHelper.current.access eq 'Coordenador'}"
+					effect="fade">
+					<f:facet name="sourceCaption">Disponíveis</f:facet>
+					<f:facet name="targetCaption">Selecionados</f:facet>
+				</p:pickList>
+
+			</p:fieldset>
+
+			<br></br>
+
+			<p:fieldset
+				legend="Criar senha"
+				style="max-width:830px">
+
+				<p:panelGrid
+					columns="4"
+					styleClass="fixedLayoutTable"
+					columnClasses="requiredSymbolColumn, labelColumnWithMaximumWidth, inputColumn, messagesColumn">
+
+					<h:outputText
+						value="#{msgs.required_field_indicator}"
+						title="#{msgs.required_field_message}" />
+					<h:outputText value="Senha nova:" />
+					<p:password
+						id="newpassword"
+						value="#{responsavelViewBean.newPassword}"
+						required="true"
+						requiredMessage="#{msgs.common_field_required}"
+						invalidMessage="#{msgs.common_field_invalid}"
+						feedback="true"
+						inline="true"
+						match="confirmpassword"
+						goodLabel="Média"
+						promptLabel="Digite uma senha"
+						strongLabel="Forte"
+						weakLabel="Fraca"
+						maxlength="32" />
+					<p:message
+						for="newpassword"
+						display="text" />
+
+					<h:outputText
+						value="#{msgs.required_field_indicator}"
+						title="#{msgs.required_field_message}" />
+					<h:outputText value="Confirmação:" />
+					<p:password
+						id="confirmpassword"
+						value="#{responsavelViewBean.newPassword}"
+						requiredMessage="#{msgs.common_field_required}"
+						invalidMessage="#{msgs.common_field_invalid}"
+						required="true"
+						maxlength="32" />
+					<p:message
+						for="confirmpassword"
+						display="text" />
+
+				</p:panelGrid>
+
+			</p:fieldset>
+
+			<br />
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+					<p:commandButton
+						type="submit"
+						value="#{msgs.global_generic_label_save}"
+						title="#{msgs.global_generic_label_save}"
+						label="#{msgs.global_generic_label_save}"
+						icon="ui-icon ui-icon-disk"
+						update="@form"
+						disabled="#{not loginHelper.isAdmin()}"
+						action="#{responsavelViewBean.save}" />
+					<p:commandButton
+						type="cancel"
+						value="#{msgs.global_generic_label_cancel}"
+						title="#{msgs.global_generic_label_cancel}"
+						label="#{msgs.global_generic_label_cancel}"
+						icon="ui-icon ui-icon-close"
+						action="#{responsavelViewBean.cancel}"
+						immediate="true" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<f:loadBundle basename="br.com.agendamento.resources.messages"
+		var="msgs" />
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/css/global.css"
+		rel="stylesheet" type="text/css" media="all" />
+	<title>Módulo Agendamento de Exames</title>
+
+	<script>
+		function shake_dialog(prime_dialog_widget, xhr, status, args) {
+
+			var shake = false;
+
+			// global error messages
+			var globalErrArray = $('.ui-messages-error');
+			if (globalErrArray.length > 0) {
+				shake = true;
+			}
+
+			if (args != null) {
+				var dialog_jqid = prime_dialog_widget.jqId;
+				if (args.validationFailed) {
+					shake = true;
+				} else {
+					// widget error message
+					var widgetErrArray = $('#' + prime_dialog_widget.id
+							+ ' .ui-message-error');
+					if (widgetErrArray.length > 0) {
+						shake = true;
+					}
+				}
+			}
+
+			if (shake) {
+				jQuery(dialog_jqid).effect("shake", {times : 3}, 70);
+			}
+
+			return shake;
+		}
+	</script>
+
+</h:head>
+<h:body styleClass="darkBackground">
+
+	<p:dialog modal="true" closable="false" draggable="false"
+		resizable="false" widgetVar="loginDialog" visible="true"
+		header="Módulo Agendamento de Exames">
+		<h2>
+			<h:outputText value="Login" />
+		</h2>
+		<div id="initialScreenMessage">
+			<h:form>
+				<p:messages autoUpdate="true" redisplay="false" showDetail="true" />
+				<p:panelGrid columns="2" columnClasses="rightText, rightText">
+					<h:outputLabel for="username" value="#{msgs.login_username_label}" />
+					<p:inputText id="username" value="#{loginHelper.username}"
+						alt="#{msgs.login_username_label}" maxlength="32" />
+					<h:outputLabel for="password" value="#{msgs.login_password_label}" />
+					<p:password id="password" value="#{loginHelper.password}"
+						alt="#{msgs.login_password_label}" maxlength="32" feedback="false" />
+				</p:panelGrid>
+				<p:commandButton value="Login" action="#{loginHelper.login}"
+					oncomplete="shake_dialog(loginDialog, xhr, status, args);" />
+
+			</h:form>
+		</div>
+
+	</p:dialog>
+
+</h:body>
+</html>
